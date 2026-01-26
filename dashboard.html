@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="ExitGuard Dashboard - Real-time customer exit prevention monitoring and analytics">
+    <title>ExitGuard Dashboard — Customer Service Monitor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #0F172A;
+            background-color: #F8FAFC;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: #1E293B;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            color: #FFFFFF;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 16px rgba(30, 41, 59, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            color: #FFFFFF;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-subtitle {
+            color: #D1D5DB;
+            font-size: 1.1rem;
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo:hover {
+            color: #10B981;
+        }
+
+        .nav-desktop {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-desktop a {
+            color: #D1D5DB;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-desktop a:hover {
+            color: #FFFFFF;
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        .nav-desktop a.active {
+            color: #10B981;
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        .user-info {
+            color: #94A3B8;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+        }
+
+        #logoutBtn {
+            background-color: #EF4444;
+            color: #FFFFFF;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        #logoutBtn:hover {
+            background-color: #DC2626;
+            transform: translateY(-2px);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.75rem;
+            min-width: 44px;
+            min-height: 44px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #FFFFFF;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(7px, 7px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Mobile Navigation */
+        .nav-mobile {
+            display: none;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 1rem 0 0 0;
+            margin-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-mobile.active {
+            display: flex;
+        }
+
+        .nav-mobile a,
+        .nav-mobile .user-info-mobile,
+        .nav-mobile button {
+            width: 100%;
+            text-align: left;
+            padding: 1rem;
+            font-size: 1.1rem;
+            min-height: 44px;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .nav-mobile a {
+            color: #D1D5DB;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-mobile a:hover,
+        .nav-mobile a.active {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+        }
+
+        .user-info-mobile {
+            color: #94A3B8;
+            font-size: 0.95rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background-color: #FFFFFF;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(30, 41, 59, 0.08);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #64748B;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card.green .stat-value {
+            color: #10B981;
+        }
+
+        .stat-card.amber .stat-value {
+            color: #F59E0B;
+        }
+
+        .stat-card.red .stat-value {
+            color: #EF4444;
+        }
+
+        .alert-section {
+            background-color: #FEF2F2;
+            border-left: 4px solid #EF4444;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .alert-section h2 {
+            color: #EF4444;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .alert-item {
+            background-color: #FFFFFF;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .alert-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .sessions-section {
+            background-color: #FFFFFF;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(30, 41, 59, 0.08);
+        }
+
+        .sessions-section h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        .sessions-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .sessions-table th {
+            background-color: #F8FAFC;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #1E293B;
+            border-bottom: 2px solid #E2E8F0;
+        }
+
+        .sessions-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .sessions-table tr:hover {
+            background-color: #F8FAFC;
+        }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 1.25rem;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .risk-low {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+
+        .risk-medium {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+
+        .risk-high {
+            background-color: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .action-badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            background-color: #10B981;
+            color: #FFFFFF;
+        }
+
+        .last-active {
+            color: #64748B;
+            font-size: 0.9rem;
+        }
+
+        .behavior-counts {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .behavior-tag {
+            background-color: #F8FAFC;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #64748B;
+            border: 1px solid #E2E8F0;
+        }
+
+        .refresh-info {
+            text-align: center;
+            color: #64748B;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .refresh-info.active {
+            color: #10B981;
+            font-weight: 600;
+        }
+
+        .no-sessions {
+            text-align: center;
+            padding: 3rem;
+            color: #64748B;
+        }
+
+        /* Focus Styles for Accessibility */
+        *:focus-visible {
+            outline: 3px solid #10B981;
+            outline-offset: 2px;
+        }
+
+        button:focus-visible,
+        a:focus-visible {
+            outline: 3px solid #10B981;
+            outline-offset: 2px;
+        }
+
+        /* Skip to Main Content Link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #10B981;
+            color: white;
+            padding: 0.5rem 1rem;
+            z-index: 10000;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Table Wrapper for Mobile Scroll */
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 12px;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .nav-desktop {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .stat-card {
+                padding: 1.5rem;
+            }
+
+            .stat-value {
+                font-size: 2.5rem;
+            }
+
+            .table-wrapper {
+                border: 1px solid #E2E8F0;
+            }
+
+            .sessions-table {
+                min-width: 800px;
+            }
+
+            .alert-section h2 {
+                font-size: 1.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 1rem 0;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-value {
+                font-size: 2rem;
+            }
+
+            .stat-label {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header>
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="logo">🛡️ ExitGuard</a>
+
+                <!-- Desktop Navigation -->
+                <nav class="nav-desktop" aria-label="Main navigation">
+                    <a href="index.html">Home</a>
+                    <a href="demo-store.html">Demo Store</a>
+                    <a href="dashboard.html" class="active" aria-current="page">Dashboard</a>
+                    <div class="user-info" id="userInfo" aria-live="polite"></div>
+                    <button id="logoutBtn" aria-label="Logout from dashboard">Logout</button>
+                </nav>
+
+                <!-- Mobile Hamburger -->
+                <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+
+            <!-- Mobile Navigation Menu -->
+            <nav class="nav-mobile" id="navMobile" aria-label="Mobile navigation">
+                <a href="index.html">Home</a>
+                <a href="demo-store.html">Demo Store</a>
+                <a href="dashboard.html" class="active" aria-current="page">Dashboard</a>
+                <div class="user-info-mobile" id="userInfoMobile" aria-live="polite"></div>
+                <button id="logoutBtnMobile"
+                    style="background-color: #EF4444; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Logout</button>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <div class="container">
+
+            <div class="stats-grid">
+                <div class="stat-card green">
+                    <div class="stat-value" id="totalSessions">0</div>
+                    <div class="stat-label">Active Sessions</div>
+                </div>
+                <div class="stat-card amber">
+                    <div class="stat-value" id="avgRisk">0</div>
+                    <div class="stat-label">Average Risk Score</div>
+                </div>
+                <div class="stat-card red">
+                    <div class="stat-value pulse" id="highRiskCount">0</div>
+                    <div class="stat-label">High Risk Sessions</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-value" id="totalSalvaged">0</div>
+                    <div class="stat-label">🛟 Customers Rescued</div>
+                </div>
+                <div class="stat-card amber">
+                    <div class="stat-value" id="revenueSaved">$0</div>
+                    <div class="stat-label">💰 Revenue Saved</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+                    <div class="stat-value" id="salvageRate" style="color: #FFFFFF;">0%</div>
+                    <div class="stat-label" style="color: #FFFFFF;">📈 Salvage Rate</div>
+                </div>
+            </div>
+
+            <div class="alert-section" id="alertSection" style="display: none;">
+                <h2>🚨 High Priority Alerts</h2>
+                <div id="alertsContainer"></div>
+            </div>
+
+            <div class="alert-section"
+                style="background-color: #D1FAE5; border-left: 4px solid #10B981; margin-top: 2rem;">
+                <h2 style="color: #10B981; font-size: 1.75rem; margin-bottom: 1rem;">💎 ExitGuard's Unique Value</h2>
+                <p style="font-size: 1.2rem; color: #065F46; margin-bottom: 1rem;">
+                    <strong>"Google Analytics tracks your success. ExitGuard tracks your rescues."</strong>
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+                    <div style="background-color: #FFFFFF; padding: 1.5rem; border-radius: 12px;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #10B981;" id="monthlyRescues">0</div>
+                        <div style="color: #64748B; font-weight: 500;">customers would have left without intervention
+                        </div>
+                    </div>
+                    <div style="background-color: #FFFFFF; padding: 1.5rem; border-radius: 12px;">
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #F59E0B;" id="monthlyRevenue">$0</div>
+                        <div style="color: #64748B; font-weight: 500;">revenue that was 100% going to be lost</div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="sessions-section" aria-labelledby="sessions-heading">
+                <h2 id="sessions-heading">Active Customer Sessions</h2>
+                <div class="table-wrapper">
+                    <table class="sessions-table">
+                        <thead>
+                            <tr>
+                                <th>Session ID</th>
+                                <th>Risk Score</th>
+                                <th>Customer Mood</th>
+                                <th>Root Cause</th>
+                                <th>Behaviors</th>
+                                <th>Suggested Action</th>
+                                <th>Last Active</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sessionsTableBody">
+                            <tr>
+                                <td colspan="7" class="no-sessions">No active sessions. Open demo-store.html to start
+                                    tracking.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="refresh-info" id="refreshInfo" aria-live="polite" aria-atomic="true">Waiting for data...
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Toast Notification System -->
+    <script src="toast-notification.js"></script>
+
+    <script>
+        const BACKEND_URL = 'http://localhost:5000';
+        const REFRESH_INTERVAL = 3000; // Refresh every 3 seconds
+
+        // Check authentication on page load
+        const token = localStorage.getItem('exitguard_token');
+        const username = localStorage.getItem('exitguard_username');
+
+        if (!token) {
+            // Redirect to login if no token
+            window.location.href = 'login.html';
+        }
+
+        // Display username in both desktop and mobile
+        const userInfoText = `Logged in as: ${username || 'User'}`;
+        document.getElementById('userInfo').textContent = userInfoText;
+        document.getElementById('userInfoMobile').textContent = userInfoText;
+
+        // Role-based navigation - Hide Demo Store for admin/support users
+        const userRole = localStorage.getItem('exitguard_role');
+        if (userRole === 'admin') {
+            // Admin and support users should not see Demo Store link
+            document.querySelectorAll('a[href="demo-store.html"]').forEach(link => {
+                link.style.display = 'none';
+            });
+        }
+
+        // Logout functionality for both buttons
+        function handleLogout() {
+            localStorage.removeItem('exitguard_token');
+            localStorage.removeItem('exitguard_username');
+            localStorage.removeItem('exitguard_role');
+            window.location.href = 'login.html';
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+        document.getElementById('logoutBtnMobile').addEventListener('click', handleLogout);
+
+        // Hamburger menu toggle
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const navMobile = document.getElementById('navMobile');
+
+        hamburgerBtn.addEventListener('click', () => {
+            const isOpen = navMobile.classList.toggle('active');
+            hamburgerBtn.classList.toggle('active');
+            hamburgerBtn.setAttribute('aria-expanded', isOpen);
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-wrapper') && !e.target.closest('.nav-mobile')) {
+                navMobile.classList.remove('active');
+                hamburgerBtn.classList.remove('active');
+                hamburgerBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Close mobile menu on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navMobile.classList.contains('active')) {
+                navMobile.classList.remove('active');
+                hamburgerBtn.classList.remove('active');
+                hamburgerBtn.setAttribute('aria-expanded', 'false');
+                hamburgerBtn.focus();
+            }
+        });
+
+        // === OFFLINE DETECTION ===
+        window.addEventListener('offline', () => {
+            Toast.warning('You are offline. Showing cached data.');
+        });
+
+        window.addEventListener('online', () => {
+            Toast.success('Connection restored! Refreshing data...');
+            fetchSessions();
+            fetchSalvageStats();
+        });
+
+        // === ADVANCED FETCH WITH RETRY, TIMEOUT, AND CACHING ===
+        async function fetchSessionsWithRetry(maxRetries = 3) {
+            for (let attempt = 0; attempt < maxRetries; attempt++) {
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
+                    const response = await fetch(BACKEND_URL + '/api/sessions', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        },
+                        signal: controller.signal
+                    });
+
+                    clearTimeout(timeoutId);
+
+                    // Handle authentication errors
+                    if (response.status === 401 || response.status === 403) {
+                        localStorage.removeItem('exitguard_token');
+                        localStorage.removeItem('exitguard_username');
+                        Toast.error('Session expired. Redirecting to login...');
+                        setTimeout(() => window.location.href = 'login.html', 2000);
+                        return;
+                    }
+
+                    if (!response.ok) {
+                        throw new Error(`Server returned ${response.status}`);
+                    }
+
+                    const data = await response.json();
+
+                    // Cache successful response
+                    localStorage.setItem('dashboard_cache', JSON.stringify(data));
+                    localStorage.setItem('dashboard_cache_time', Date.now());
+
+                    updateDashboard(data);
+
+                    document.getElementById('refreshInfo').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+                    document.getElementById('refreshInfo').classList.add('active');
+                    setTimeout(() => {
+                        document.getElementById('refreshInfo').classList.remove('active');
+                    }, 500);
+
+                    return data;
+
+                } catch (error) {
+                    console.error(`Fetch attempt ${attempt + 1} failed:`, error);
+
+                    // Last attempt failed
+                    if (attempt === maxRetries - 1) {
+                        // Try to use cached data
+                        const cachedData = localStorage.getItem('dashboard_cache');
+                        const cacheTime = localStorage.getItem('dashboard_cache_time');
+
+                        if (cachedData) {
+                            const data = JSON.parse(cachedData);
+                            const ageMinutes = Math.round((Date.now() - cacheTime) / 60000);
+
+                            updateDashboard(data);
+                            Toast.warning(`Showing cached data from ${ageMinutes} minute(s) ago. Unable to reach server.`);
+                        } else {
+                            // No cache available
+                            if (error.name === 'AbortError') {
+                                Toast.error('Server timeout. Please check that the backend is running.');
+                            } else if (!navigator.onLine) {
+                                Toast.error('No internet connection.');
+                            } else if (error.name === 'TypeError') {
+                                Toast.error('Unable to connect to server. Make sure Flask is running on port 5000.');
+                            } else {
+                                Toast.error('Unable to load dashboard data.');
+                            }
+                        }
+
+                        document.getElementById('refreshInfo').textContent = '⚠️ Connection issue';
+                        return null;
+                    }
+
+                    // Wait before retry (exponential backoff)
+                    const waitTime = Math.pow(2, attempt) * 1000; // 1s, 2s, 4s
+                    await new Promise(resolve => setTimeout(resolve, waitTime));
+                }
+            }
+        }
+
+        async function fetchSalvageStats() {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+                const response = await fetch(BACKEND_URL + '/api/salvage-stats', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (!response.ok) return;
+
+                const data = await response.json();
+
+                // Update salvage KPI cards
+                document.getElementById('totalSalvaged').textContent = data.total_salvaged_customers;
+                document.getElementById('revenueSaved').textContent = `$${data.total_revenue_saved.toFixed(2)}`;
+                document.getElementById('salvageRate').textContent = `${(data.salvage_rate * 100).toFixed(0)}%`;
+
+                // Update value proposition section
+                document.getElementById('monthlyRescues').textContent = data.total_salvaged_customers;
+                document.getElementById('monthlyRevenue').textContent = `$${data.total_revenue_saved.toFixed(2)}`;
+
+            } catch (error) {
+                console.error('Failed to fetch salvage stats:', error);
+                // Silently fail for salvage stats, not critical
+            }
+        }
+
+        // Use the new retry function
+        async function fetchSessions() {
+            await fetchSessionsWithRetry();
+        }
+
+        function updateDashboard(data) {
+            const sessions = data.sessions || [];
+            const totalSessions = data.total_sessions || 0;
+            const highRiskCount = data.high_risk_count || 0;
+
+            // Update stats
+            document.getElementById('totalSessions').textContent = totalSessions;
+            document.getElementById('highRiskCount').textContent = highRiskCount;
+
+            if (sessions.length > 0) {
+                const avgRisk = Math.round(sessions.reduce((sum, s) => sum + s.risk_score, 0) / sessions.length);
+                document.getElementById('avgRisk').textContent = avgRisk;
+            } else {
+                document.getElementById('avgRisk').textContent = '0';
+            }
+
+            // Update alerts section
+            const highRiskSessions = sessions.filter(s => s.risk_score >= 60);
+            const alertSection = document.getElementById('alertSection');
+            const alertsContainer = document.getElementById('alertsContainer');
+
+            if (highRiskSessions.length > 0) {
+                alertSection.style.display = 'block';
+                alertsContainer.innerHTML = highRiskSessions.map(session => `
+                    <div class="alert-item">
+                        <div>
+                            <strong>${session.session_id}</strong> — Risk: ${session.risk_score}
+                            <br>
+                            <small>${session.root_cause}</small>
+                        </div>
+                        <span class="action-badge">INTERVENE NOW</span>
+                    </div>
+                `).join('');
+            } else {
+                alertSection.style.display = 'none';
+            }
+
+            // Update sessions table
+            const tableBody = document.getElementById('sessionsTableBody');
+
+            if (sessions.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" class="no-sessions">No active sessions. Open demo-store.html to start tracking.</td></tr>';
+            } else {
+                tableBody.innerHTML = sessions.map(session => {
+                    const riskClass = session.risk_score < 30 ? 'risk-low' :
+                        session.risk_score < 60 ? 'risk-medium' : 'risk-high';
+
+                    const behaviors = session.behaviors || {};
+                    const behaviorTags = Object.entries(behaviors)
+                        .filter(([key, value]) => value > 0)
+                        .map(([key, value]) => `<span class="behavior-tag">${key}: ${value}</span>`)
+                        .join('');
+
+                    // Mood display with emojis
+                    const moodEmojis = {
+                        'frustrated': '😠',
+                        'hesitating': '🤔',
+                        'confused': '😕',
+                        'priceSensitive': '💰',
+                        'aboutToLeave': '🚪',
+                        'engaged': '😊',
+                        'neutral': '😐'
+                    };
+
+                    const moodLabels = {
+                        'frustrated': 'Frustrated',
+                        'hesitating': 'Hesitating',
+                        'confused': 'Confused',
+                        'priceSensitive': 'Price-Sensitive',
+                        'aboutToLeave': 'Leaving',
+                        'engaged': 'Engaged',
+                        'neutral': 'Neutral'
+                    };
+
+                    const mood = session.mood || 'neutral';
+                    const moodConfidence = session.mood_confidence || 0;
+                    const moodEmoji = moodEmojis[mood] || '😐';
+                    const moodLabel = moodLabels[mood] || 'Neutral';
+
+                    const moodDisplay = mood !== 'neutral'
+                        ? `<span style="font-size: 1.2rem;">${moodEmoji}</span> <strong>${moodLabel}</strong><br><small style="color: #64748B;">${moodConfidence}% confidence</small>`
+                        : `<span style="font-size: 1.2rem;">${moodEmoji}</span> ${moodLabel}`;
+
+                    return `
+                        <tr>
+                            <td><code>${session.session_id.substring(0, 20)}...</code></td>
+                            <td><span class="risk-badge ${riskClass}">${session.risk_score}</span></td>
+                            <td>${moodDisplay}</td>
+                            <td>${session.root_cause}</td>
+                            <td><div class="behavior-counts">${behaviorTags || '<span class="behavior-tag">None</span>'}</div></td>
+                            <td>${session.suggested_action}</td>
+                            <td class="last-active">${session.last_active}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+        }
+
+        // Initial fetch
+        fetchSessions();
+        fetchSalvageStats();
+
+        // Auto-refresh
+        setInterval(() => {
+            fetchSessions();
+            fetchSalvageStats();
+        }, REFRESH_INTERVAL);
+
+        console.log('ExitGuard Dashboard initialized');
+        console.log('Refreshing every', REFRESH_INTERVAL / 1000, 'seconds');
+    </script>
+</body>
+
+</html>

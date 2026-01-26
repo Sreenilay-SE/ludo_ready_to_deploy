@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExitGuard – Real-Time Churn Prevention</title>
+    <meta name="description"
+        content="ExitGuard is a full-stack real-time exit prevention platform that detects customer disengagement signals, calculates churn risk scores, and triggers proactive interventions before users leave.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #0F172A;
+            background-color: #FFFFFF;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: #1E293B;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(100, 116, 139, 0.1);
+            z-index: 1000;
+            padding: 1.5rem 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1E293B;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo:hover {
+            color: #10B981;
+        }
+
+        .nav-desktop {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-desktop ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            margin: 0;
+        }
+
+        .nav-desktop a {
+            color: #64748B;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+        }
+
+        .nav-desktop a:hover {
+            color: #10B981;
+            background-color: rgba(16, 185, 129, 0.05);
+        }
+
+        .cta-button-nav {
+            background-color: #10B981;
+            color: #FFFFFF;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
+
+        .cta-button-nav:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.75rem;
+            min-width: 44px;
+            min-height: 44px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #1E293B;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(7px, 7px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Mobile Navigation */
+        .nav-mobile {
+            display: none;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 1rem 0;
+            margin-top: 1rem;
+            border-top: 1px solid rgba(100, 116, 139, 0.1);
+        }
+
+        .nav-mobile.active {
+            display: flex;
+        }
+
+        .nav-mobile a {
+            color: #64748B;
+            text-decoration: none;
+            padding: 1rem;
+            font-size: 1.1rem;
+            min-height: 44px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-mobile a:hover {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+        }
+
+        .nav-mobile .cta-button-nav {
+            margin-top: 0.5rem;
+            justify-content: center;
+        }
+
+        section {
+            padding: 6rem 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #F8FAFC 0%, #FFFFFF 100%);
+            padding: 8rem 0;
+            text-align: center;
+            opacity: 1;
+            transform: none;
+        }
+
+        .hero h1 {
+            margin-bottom: 1.5rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-subheadline {
+            font-size: 1.15rem;
+            color: #64748B;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: #10B981;
+            color: #FFFFFF;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
+
+        .cta-button:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+        }
+
+        .problem-section,
+        .gap-section,
+        .solution-section,
+        .feasibility-section {
+            background-color: #FFFFFF;
+        }
+
+        .users-section,
+        .architecture-section,
+        .features-section,
+        .impact-section {
+            background-color: #F8FAFC;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .content-block {
+            max-width: 900px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #0F172A;
+        }
+
+        .content-block p {
+            margin-bottom: 1.5rem;
+        }
+
+        .users-list {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .user-item {
+            background-color: #FFFFFF;
+            padding: 1.75rem;
+            border-radius: 12px;
+            border-left: 4px solid #10B981;
+            box-shadow: 0 2px 8px rgba(30, 41, 59, 0.06);
+        }
+
+        .user-item strong {
+            color: #1E293B;
+            font-weight: 600;
+        }
+
+        .architecture-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .architecture-text {
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .flowchart {
+            background-color: #FFFFFF;
+            padding: 3rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(30, 41, 59, 0.08);
+        }
+
+        .flowchart-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .flow-column {
+            flex: 1;
+            background-color: #F8FAFC;
+            padding: 2rem 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #E2E8F0;
+            position: relative;
+        }
+
+        .flow-column h4 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1E293B;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .flow-item {
+            background-color: #FFFFFF;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border: 1px solid #E2E8F0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .flow-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .flow-arrow {
+            position: absolute;
+            top: 50%;
+            right: -2.5rem;
+            width: 2rem;
+            height: 2px;
+            background-color: #10B981;
+        }
+
+        .flow-arrow::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -4px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid #10B981;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+        }
+
+        .flow-steps {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .flow-step {
+            background-color: #10B981;
+            color: #FFFFFF;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background-color: #FFFFFF;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(30, 41, 59, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(30, 41, 59, 0.12);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: #1E293B;
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            color: #64748B;
+            line-height: 1.6;
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .impact-item {
+            background-color: #FFFFFF;
+            padding: 2rem;
+            border-radius: 12px;
+            border-top: 4px solid #F59E0B;
+            box-shadow: 0 4px 16px rgba(30, 41, 59, 0.08);
+        }
+
+        .impact-item h3 {
+            font-size: 1.25rem;
+            color: #1E293B;
+            margin-bottom: 0.75rem;
+        }
+
+        .impact-item p {
+            color: #64748B;
+            font-size: 0.95rem;
+        }
+
+        .demo-section {
+            background-color: #F8FAFC;
+            padding: 3rem;
+            border-radius: 16px;
+            max-width: 700px;
+            margin: 3rem auto 0;
+            border: 2px solid #E2E8F0;
+        }
+
+        .demo-section h3 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #1E293B;
+        }
+
+        .demo-control {
+            margin-bottom: 2rem;
+        }
+
+        .demo-control label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1E293B;
+        }
+
+        .risk-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            outline: none;
+            appearance: none;
+            background: linear-gradient(to right, #10B981, #F59E0B, #EF4444);
+        }
+
+        .risk-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #1E293B;
+            cursor: pointer;
+        }
+
+        .risk-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #1E293B;
+            cursor: pointer;
+            border: none;
+        }
+
+        .risk-display {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 1.5rem 0;
+            font-family: 'Playfair Display', serif;
+            transition: color 0.3s ease;
+        }
+
+        .risk-message {
+            background-color: #FFFFFF;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+
+        .contact-section {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            color: #FFFFFF;
+            padding: 6rem 0;
+        }
+
+        .contact-section h2 {
+            color: #FFFFFF;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #F8FAFC;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-button {
+            width: 100%;
+            background-color: #10B981;
+            color: #FFFFFF;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            background-color: #0F172A;
+            color: #64748B;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        footer a {
+            color: #64748B;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #10B981;
+        }
+
+        /* Focus Styles for Accessibility */
+        *:focus-visible {
+            outline: 3px solid #10B981;
+            outline-offset: 2px;
+        }
+
+        /* Skip to Main Content Link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #10B981;
+            color: white;
+            padding: 0.5rem 1rem;
+            z-index: 10000;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        @media (max-width: 768px) {
+            .nav-desktop {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .hero {
+                padding: 5rem 0;
+            }
+
+            section {
+                padding: 4rem 0;
+            }
+
+            .flowchart-container {
+                flex-direction: column;
+            }
+
+            .flow-arrow {
+                display: none;
+            }
+
+            .features-grid,
+            .impact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 1rem 0;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .hero {
+                padding: 3rem 0;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .cta-button {
+                padding: 0.875rem 2rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#home" class="logo">🛡️ ExitGuard</a>
+
+                <!-- Desktop Navigation -->
+                <nav class="nav-desktop" aria-label="Main navigation">
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Demo</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                    <a href="login.html" class="cta-button-nav">Try ExitGuard →</a>
+                </nav>
+
+                <!-- Mobile Hamburger -->
+                <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+
+            <!-- Mobile Navigation Menu -->
+            <nav class="nav-mobile" id="navMobile" aria-label="Mobile navigation">
+                <a href="#home">Home</a>
+                <a href="#features">Demo</a>
+                <a href="#contact">Contact</a>
+                <a href="login.html" class="cta-button-nav">Try ExitGuard →</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <section id="home" class="hero">
+            <div class="container">
+                <h1>ExitGuard — Prevent Silent Churn Before Users Leave</h1>
+                <p class="hero-subheadline">A full-stack real-time exit prevention platform that ingests and analyzes
+                    customer behavioral data using a lightweight JavaScript SDK. It calculates real-time churn risk
+                    scores, identifies disengagement signals, provides actionable insights explaining why a customer is
+                    losing interest, suggests interventions to prevent exit, and offers a dynamic web dashboard for
+                    business users to visualize behavior, track trends, and make data-driven retention decisions.</p>
+                <a href="login.html" class="cta-button">Try ExitGuard →</a>
+            </div>
+        </section>
+
+        <section id="problem" class="problem-section">
+            <div class="container">
+                <h2 class="section-title">The Problem</h2>
+                <div class="content-block">
+                    <p>In digital businesses, customer churn often happens silently. Users may browse an app, hesitate,
+                        face small friction points, and eventually leave without returning. Traditional analytics often
+                        detect churn only after it has occurred, making intervention too late.</p>
+                    <p>Silent churn — users leaving platforms because of friction without offering feedback — is a major
+                        problem for digital businesses. Current analytics are reactive, showing churn only after a user
+                        has left. There is no system in place to detect frustration signals in real time and take
+                        proactive action before the user departs, preventing loss and enhancing retention.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="users" class="users-section">
+            <div class="container">
+                <h2 class="section-title">Who Benefits</h2>
+                <div class="users-list">
+                    <div class="user-item">
+                        <strong>Ecommerce & SaaS Businesses:</strong> Enhance customer retention and maximize conversion
+                        outcomes.
+                    </div>
+                    <div class="user-item">
+                        <strong>Customer Support Teams:</strong> Receive real-time alerts to proactively assist
+                        high-value users.
+                    </div>
+                    <div class="user-item">
+                        <strong>Product Managers:</strong> Gain immediate visibility into friction points and usability
+                        challenges.
+                    </div>
+                    <div class="user-item">
+                        <strong>End Users:</strong> Experience timely support and a seamless, frustration-free journey.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gap" class="gap-section">
+            <div class="container">
+                <h2 class="section-title">The Gap in Existing Solutions</h2>
+                <div class="content-block">
+                    <p>Current solutions act as a "post mortem" analysis rather than an immediate intervention. There is
+                        no unified system that combines real-time behavioural tracking with immediate heuristic scoring
+                        to trigger interventions during the active session.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="solution" class="solution-section">
+            <div class="container">
+                <h2 class="section-title">Our Solution</h2>
+                <div class="content-block">
+                    <p>ExitGuard provides a comprehensive, real-time platform that bridges the gap between user behavior
+                        and business action. By continuously monitoring micro-interactions through a lightweight
+                        JavaScript SDK, ExitGuard captures the subtle signals that indicate user frustration or
+                        disengagement.</p>
+                    <p>The platform processes behavioral data streams, applies sophisticated heuristic scoring
+                        algorithms, and generates real-time churn risk assessments. These insights are immediately
+                        actionable, enabling businesses to intervene during the critical moment when a user is
+                        considering leaving.</p>
+                    <p>Through an intuitive dashboard, teams gain visibility into user behavior patterns, identify
+                        systemic friction points, and track the effectiveness of retention interventions over time. This
+                        transforms reactive churn analysis into proactive user retention management.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture" class="architecture-section">
+            <div class="container">
+                <h2 class="section-title">Architecture & How It Works</h2>
+                <div class="architecture-content">
+                    <div class="architecture-text">
+                        <p>ExitGuard operates through a carefully orchestrated data pipeline that spans from the user's
+                            browser to actionable business insights. The system architecture ensures real-time
+                            processing while maintaining minimal performance impact on client applications.</p>
+                    </div>
+
+                    <div class="flowchart">
+                        <div class="flowchart-container">
+                            <div class="flow-column">
+                                <h4>Client Side (Browser)</h4>
+                                <div class="flow-item">User's Browser / Demo App with Behavioral Tracker (JavaScript
+                                    SDK)</div>
+                                <div class="flow-item">Captures micro-interactions: clicks, scrolls, idles, hesitations,
+                                    rage clicks, dead clicks, mouse jiggles</div>
+                                <div class="flow-item">Covering navigation patterns, delays, failed actions</div>
+                                <div class="flow-item">Every ~10 seconds: HTTP POST sends events to backend</div>
+                            </div>
+
+                            <div class="flow-column">
+                                <h4>Server Side (Backend & ML)</h4>
+                                <div class="flow-item">Flask Backend (API & Processing): receives events, counts
+                                    behaviors</div>
+                                <div class="flow-item">Feeds data to ML Churn Engine (Scikit-learn)</div>
+                                <div class="flow-item">ML Churn Engine: predicts Churn Risk Score (0–1 internally,
+                                    displayed as 0–100)</div>
+                                <div class="flow-item">Identifies root causes (e.g., "High hesitation")</div>
+                                <div class="flow-item">Returns JSON response with risk score + intervention triggers to
+                                    client</div>
+                                <div class="flow-item">Pushes data updates / polling to dashboard</div>
+                            </div>
+
+                            <div class="flow-column">
+                                <h4>Visualization & Action</h4>
+                                <div class="flow-item">Streamlit Dashboard: refreshes every few seconds</div>
+                                <div class="flow-item">Displays live risk scores, at-risk sessions, alerts</div>
+                                <div class="flow-item">Shows root causes, suggested actions</div>
+                                <div class="flow-item">Example: "User X is at risk – Offer discount"</div>
+                                <div class="flow-item">Used by Business User / PM / Support Team</div>
+                            </div>
+                        </div>
+
+                        <div class="flow-steps">
+                            <span class="flow-step">1. User Interaction</span>
+                            <span class="flow-step">2. POST Events</span>
+                            <span class="flow-step">3. Count Behaviors</span>
+                            <span class="flow-step">4. Predict Score & Root Cause</span>
+                            <span class="flow-step">5a. Polling Update</span>
+                            <span class="flow-step">5b. Show Alerts/Suggestions</span>
+                        </div>
+                    </div>
+
+                    <div class="demo-section">
+                        <h3>Interactive Risk Demo</h3>
+                        <div class="demo-control">
+                            <label for="riskSlider">Adjust Churn Risk Score (0–100):</label>
+                            <input type="range" id="riskSlider" class="risk-slider" min="0" max="100" value="45">
+                        </div>
+                        <div class="risk-display" id="riskDisplay">45</div>
+                        <div class="risk-message" id="riskMessage">Medium risk: Moderate hesitation detected – monitor
+                            closely</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features-section">
+            <div class="container">
+                <h2 class="section-title">Core Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <svg class="feature-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="35" fill="none" stroke="#10B981" stroke-width="3" />
+                            <circle cx="50" cy="50" r="5" fill="#10B981" />
+                            <line x1="50" y1="50" x2="50" y2="20" stroke="#10B981" stroke-width="3" />
+                            <line x1="50" y1="50" x2="75" y2="50" stroke="#10B981" stroke-width="3" />
+                        </svg>
+                        <h3>Telemetry Tracker</h3>
+                        <p>Rage clicks, dead clicks, mouse jiggles.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <svg class="feature-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 20 70 Q 35 40, 50 50 T 80 30" fill="none" stroke="#10B981" stroke-width="3" />
+                            <circle cx="20" cy="70" r="4" fill="#10B981" />
+                            <circle cx="50" cy="50" r="4" fill="#10B981" />
+                            <circle cx="80" cy="30" r="4" fill="#10B981" />
+                            <path d="M 50 80 A 30 30 0 0 1 50 20" fill="none" stroke="#F59E0B" stroke-width="3" />
+                        </svg>
+                        <h3>Heuristic Engine</h3>
+                        <p>Real-time risk scoring.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <svg class="feature-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="15" y="20" width="70" height="50" rx="3" fill="none" stroke="#10B981"
+                                stroke-width="3" />
+                            <line x1="15" y1="35" x2="85" y2="35" stroke="#10B981" stroke-width="3" />
+                            <rect x="25" y="45" width="15" height="15" fill="#10B981" />
+                            <rect x="45" y="50" width="15" height="10" fill="#F59E0B" />
+                            <rect x="65" y="42" width="15" height="18" fill="#10B981" />
+                        </svg>
+                        <h3>Dashboard</h3>
+                        <p>Flags at-risk sessions.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <svg class="feature-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 50 25 L 35 40 L 40 40 L 40 55 L 60 55 L 60 40 L 65 40 Z" fill="none"
+                                stroke="#10B981" stroke-width="3" />
+                            <circle cx="50" cy="70" r="8" fill="none" stroke="#F59E0B" stroke-width="3" />
+                            <line x1="50" y1="62" x2="50" y2="55" stroke="#F59E0B" stroke-width="2" />
+                        </svg>
+                        <h3>Intervention System</h3>
+                        <p>Dynamic popups/offers to retain users.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="feasibility" class="feasibility-section">
+            <div class="container">
+                <h2 class="section-title">Feasibility & Constraints</h2>
+                <div class="content-block">
+                    <p><strong>Feasibility:</strong> The system works using simple rules and real-time tracking, making
+                        it practical to implement and operate.</p>
+                    <p><strong>Constraints:</strong> It must not slow down the website and must avoid collecting any
+                        personal or sensitive user data.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="impact" class="impact-section">
+            <div class="container">
+                <h2 class="section-title">Expected Impact</h2>
+                <div class="impact-grid">
+                    <div class="impact-item">
+                        <h3>Revenue Recovery</h3>
+                        <p>Save ~10–15% of at-risk sessions.</p>
+                    </div>
+                    <div class="impact-item">
+                        <h3>Efficiency</h3>
+                        <p>Shift support from reactive to proactive.</p>
+                    </div>
+                    <div class="impact-item">
+                        <h3>UX Gains</h3>
+                        <p>Identify broken flows instantly.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <h2>Ready to Recover Lost Revenue & Boost Retention?</h2>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="workEmail">Work Email *</label>
+                        <input type="email" id="workEmail" name="workEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="companyName">Company Name</label>
+                        <input type="text" id="companyName" name="companyName">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone (optional)</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message"
+                            placeholder="Tell us about your current churn challenges"></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Submit</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <span>&copy; 2026 ExitGuard</span>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+                <a href="mailto:contact@exitguard.com">contact@exitguard.com</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const riskSlider = document.getElementById('riskSlider');
+        const riskDisplay = document.getElementById('riskDisplay');
+        const riskMessage = document.getElementById('riskMessage');
+
+        riskSlider.addEventListener('input', function () {
+            const riskValue = parseInt(this.value);
+            riskDisplay.textContent = riskValue;
+
+            if (riskValue < 30) {
+                riskDisplay.style.color = '#10B981';
+                riskMessage.style.borderLeftColor = '#10B981';
+                riskMessage.textContent = 'Low risk: User engagement is healthy – continue monitoring';
+            } else if (riskValue < 70) {
+                riskDisplay.style.color = '#F59E0B';
+                riskMessage.style.borderLeftColor = '#F59E0B';
+                riskMessage.textContent = 'Medium risk: Moderate hesitation detected – monitor closely';
+            } else {
+                riskDisplay.style.color = '#EF4444';
+                riskMessage.style.borderLeftColor = '#EF4444';
+                riskMessage.textContent = 'High risk: High hesitation detected – suggest offer popup';
+            }
+        });
+
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert("Thank you! We'll get back to you shortly.");
+            contactForm.reset();
+        });
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            if (!section.classList.contains('hero')) {
+                observer.observe(section);
+            }
+        });
+
+        // Hamburger menu toggle
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const navMobile = document.getElementById('navMobile');
+
+        if (hamburgerBtn) {
+            hamburgerBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isOpen = navMobile.classList.toggle('active');
+                hamburgerBtn.classList.toggle('active');
+                hamburgerBtn.setAttribute('aria-expanded', isOpen);
+            });
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('header')) {
+                navMobile.classList.remove('active');
+                if (hamburgerBtn) {
+                    hamburgerBtn.classList.remove('active');
+                    hamburgerBtn.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+
+        // Close mobile menu on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navMobile.classList.contains('active')) {
+                navMobile.classList.remove('active');
+                hamburgerBtn.classList.remove('active');
+                hamburgerBtn.setAttribute('aria-expanded', 'false');
+                hamburgerBtn.focus();
+            }
+        });
+    </script>
+</body>
+
+</html>

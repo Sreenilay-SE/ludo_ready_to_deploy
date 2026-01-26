@@ -1,0 +1,21 @@
+services:
+  # Flask Backend - 100% FREE
+  - type: web
+    name: exitguard-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "cd backend && pip install -r requirements.txt"
+    startCommand: "cd backend && gunicorn --bind 0.0.0.0:$PORT app:app"
+    healthCheckPath: /api/health
+    envVars:
+      - key: API_KEY
+        value: exitguard_demo_key_2026
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: FLASK_ENV
+        value: production
+      - key: REDIS_HOST
+        value: localhost
+      - key: REDIS_PORT
+        value: 6379

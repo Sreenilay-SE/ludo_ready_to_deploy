@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TechShop - Premium tech accessories demo store powered by ExitGuard">
+    <title>TechShop — Premium Tech Accessories</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #0F172A;
+            background-color: #F8FAFC;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: #1E293B;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        header {
+            background-color: #FFFFFF;
+            padding: 1.5rem 0;
+            box-shadow: 0 2px 8px rgba(30, 41, 59, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex: 1;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #1E293B;
+            text-decoration: none;
+        }
+
+        .logo:hover {
+            color: #10B981;
+        }
+
+        .nav-desktop {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-desktop a {
+            color: #64748B;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-desktop a:hover {
+            color: #1E293B;
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        .nav-desktop a.active {
+            color: #10B981;
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.75rem;
+            min-width: 44px;
+            min-height: 44px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #1E293B;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(7px, 7px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Mobile Navigation */
+        .nav-mobile {
+            display: none;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 1rem 0;
+            margin-top: 1rem;
+            border-top: 1px solid #E2E8F0;
+            width: 100%;
+        }
+
+        .nav-mobile.active {
+            display: flex;
+        }
+
+        .nav-mobile a,
+        .nav-mobile button {
+            width: 100%;
+            text-align: left;
+            padding: 1rem;
+            font-size: 1.1rem;
+            min-height: 44px;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .nav-mobile a {
+            color: #64748B;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-mobile a:hover,
+        .nav-mobile a.active {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+        }
+
+        .cart-icon {
+            background-color: #10B981;
+            color: #FFFFFF;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        .cart-icon:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+        }
+
+        .cart-count {
+            background-color: #F59E0B;
+            color: #FFFFFF;
+            border-radius: 50%;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            color: #FFFFFF;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            color: #FFFFFF;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #D1D5DB;
+        }
+
+        .session-info {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 2px solid #10B981;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .session-info h3 {
+            color: #10B981;
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .session-info p {
+            color: #64748B;
+            font-size: 0.9rem;
+        }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .products-section {
+            padding: 4rem 0;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background-color: #FFFFFF;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(30, 41, 59, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(30, 41, 59, 0.12);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background-color: #F8FAFC;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1E293B;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            color: #10B981;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            background-color: #1E293B;
+            color: #FFFFFF;
+            padding: 0.875rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #10B981;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #FFFFFF;
+            border-radius: 16px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #64748B;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: #1E293B;
+        }
+
+        .cart-modal .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 1rem;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-total {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1E293B;
+            margin-top: 1.5rem;
+            text-align: right;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background-color: #10B981;
+            color: #FFFFFF;
+            padding: 1rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+
+        .checkout-btn:hover {
+            background-color: #059669;
+        }
+
+        .intervention-modal .modal-content {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: #FFFFFF;
+            text-align: center;
+        }
+
+        .intervention-modal h2 {
+            color: #FFFFFF;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .intervention-modal p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .intervention-btn {
+            background-color: #FFFFFF;
+            color: #10B981;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin: 0.5rem;
+        }
+
+        .intervention-btn:hover {
+            background-color: #F8FAFC;
+        }
+
+        .checkout-section {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #FFFFFF;
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(30, 41, 59, 0.08);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1E293B;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem;
+            border-radius: 8px;
+            border: 1px solid #E2E8F0;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+
+        .place-order-btn {
+            width: 100%;
+            background-color: #10B981;
+            color: #FFFFFF;
+            padding: 1rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .place-order-btn:hover {
+            background-color: #059669;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 3rem;
+            color: #64748B;
+        }
+
+        /* Focus Styles for Accessibility */
+        *:focus-visible {
+            outline: 3px solid #10B981;
+            outline-offset: 2px;
+        }
+
+        button:focus-visible,
+        a:focus-visible {
+            outline: 3px solid #10B981;
+            outline-offset: 2px;
+        }
+
+        /* Skip to Main Content Link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #10B981;
+            color: white;
+            padding: 0.5rem 1rem;
+            z-index: 10000;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        @media (max-width: 768px) {
+            .nav-desktop {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero {
+                padding: 3rem 0;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .session-info {
+                padding: 1rem;
+            }
+
+            .session-info h3 {
+                font-size: 1rem;
+            }
+
+            .risk-badge {
+                font-size: 1.25rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 2rem;
+                width: 95%;
+            }
+
+            .intervention-modal h2 {
+                font-size: 1.5rem;
+            }
+
+            .intervention-btn {
+                padding: 0.875rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 1rem 0;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+
+            .modal-close {
+                font-size: 1.5rem;
+                min-width: 44px;
+                min-height: 44px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="nav-wrapper">
+                    <a href="index.html" class="logo">TechShop</a>
+
+                    <!-- Desktop Navigation -->
+                    <nav class="nav-desktop" aria-label="Main navigation">
+                        <a href="index.html">About ExitGuard</a>
+                        <a href="demo-store.html" class="active" aria-current="page">Shop</a>
+                    </nav>
+
+                    <!-- Mobile Hamburger -->
+                    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu"
+                        aria-expanded="false">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+
+                <button class="cart-icon" onclick="openCart()" aria-label="Shopping cart with items">
+                    🛒 Cart <span class="cart-count" id="cartCount" aria-label="items in cart">0</span>
+                </button>
+            </div>
+
+            <!-- Mobile Navigation Menu -->
+            <nav class="nav-mobile" id="navMobile" aria-label="Mobile navigation">
+                <a href="index.html">About ExitGuard</a>
+                <a href="demo-store.html" class="active" aria-current="page">Shop</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <div class="hero">
+            <div class="container">
+                <h1>Premium Tech Accessories</h1>
+                <p>Elevate your workspace with cutting-edge technology</p>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="session-info">
+                <h3>🔍 ExitGuard Active — Your Session is Being Monitored</h3>
+                <p>Session ID: <strong id="sessionId">Loading...</strong></p>
+                <p>Current Churn Risk Score:</p>
+                <div class="risk-badge" id="riskBadge">0</div>
+            </div>
+        </div>
+
+        <section class="products-section" aria-labelledby="products-heading">
+            <div class="container">
+                <h2 id="products-heading">Featured Products</h2>
+                <div class="products-grid" id="productsGrid" role="list"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal cart-modal" role="dialog" aria-modal="true" aria-labelledby="cart-modal-title">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeCart()" aria-label="Close cart">&times;</button>
+            <h2 id="cart-modal-title">Your Cart</h2>
+            <div id="cartItems"></div>
+            <div class="cart-total">Total: $<span id="cartTotal">0</span></div>
+            <button class="checkout-btn" onclick="goToCheckout()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Mood-Based Intervention Modals -->
+
+    <!-- 1. Frustrated Customer -->
+    <div id="interventionFrustrated" class="modal intervention-modal" role="dialog" aria-modal="true">
+        <div class="modal-content" style="background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);">
+            <button class="modal-close" onclick="closeAllInterventions()" style="color: white;"
+                aria-label="Close">×</button>
+            <h2 style="color: white; font-size: 2rem; margin-bottom: 1rem;">😔 Having Trouble?</h2>
+            <p style="color: white; font-size: 1.1rem; margin-bottom: 2rem;">We're sorry for any confusion. Let us help
+                you!</p>
+            <button class="intervention-btn" onclick="applyMoodDiscount(15, 'frustrated')">Get 15% OFF to Make it Worth
+                Your Time</button>
+            <button class="intervention-btn" onclick="contactSupport()">Chat with Support</button>
+            <button class="intervention-btn" onclick="closeAllInterventions()">I'm Fine, Thanks</button>
+        </div>
+    </div>
+
+    <!-- 2. Hesitating Customer -->
+    <div id="interventionHesitating" class="modal intervention-modal" role="dialog" aria-modal="true">
+        <div class="modal-content" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">
+            <button class="modal-close" onclick="closeAllInterventions()" style="color: white;"
+                aria-label="Close">×</button>
+            <h2 style="color: white; font-size: 2rem; margin-bottom: 1rem;">🤔 Need More Time to Decide?</h2>
+            <p style="color: white; font-size: 1.1rem; margin-bottom: 2rem;">Take 10% off to help make your decision
+                easier!</p>
+            <button class="intervention-btn" onclick="applyMoodDiscount(10, 'hesitating')">Apply 10% Discount</button>
+            <button class="intervention-btn" onclick="showReviews()">See Customer Reviews</button>
+            <button class="intervention-btn" onclick="closeAllInterventions()">Keep Browsing</button>
+        </div>
+    </div>
+
+    <!-- 3. Confused Customer -->
+    <div id="interventionConfused" class="modal intervention-modal" role="dialog" aria-modal="true">
+        <div class="modal-content" style="background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);">
+            <button class="modal-close" onclick="closeAllInterventions()" style="color: white;"
+                aria-label="Close">×</button>
+            <h2 style="color: white; font-size: 2rem; margin-bottom: 1rem;">😕 Looking for Something Specific?</h2>
+            <p style="color: white; font-size: 1.1rem; margin-bottom: 2rem;">Let us help you find exactly what you need!
+            </p>
+            <button class="intervention-btn" onclick="showPopularProducts()">View Popular Products</button>
+            <button class="intervention-btn" onclick="contactSupport()">Get Shopping Help</button>
+            <button class="intervention-btn" onclick="closeAllInterventions()">I'll Figure It Out</button>
+        </div>
+    </div>
+
+    <!-- 4. Price-Sensitive Customer -->
+    <div id="interventionPriceSensitive" class="modal intervention-modal" role="dialog" aria-modal="true">
+        <div class="modal-content" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+            <button class="modal-close" onclick="closeAllInterventions()" style="color: white;"
+                aria-label="Close">×</button>
+            <h2 style="color: white; font-size: 2rem; margin-bottom: 1rem;">💰 Special Offer Just for You!</h2>
+            <p style="color: white; font-size: 1.1rem; margin-bottom: 2rem;">Save 15% on your entire order today!</p>
+            <button class="intervention-btn" onclick="applyMoodDiscount(15, 'priceSensitive')">Claim 15%
+                Discount</button>
+            <button class="intervention-btn" onclick="showPaymentOptions()">See Payment Plans</button>
+            <button class="intervention-btn" onclick="closeAllInterventions()">No Thanks</button>
+        </div>
+    </div>
+
+    <!-- 5. About to Leave Customer -->
+    <div id="interventionAboutToLeave" class="modal intervention-modal" role="dialog" aria-modal="true">
+        <div class="modal-content" style="background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);">
+            <button class="modal-close" onclick="closeAllInterventions()" style="color: white;"
+                aria-label="Close">×</button>
+            <h2 style="color: white; font-size: 2rem; margin-bottom: 1rem;">🚪 Wait! Don't Leave Yet!</h2>
+            <p style="color: white; font-size: 1.1rem; margin-bottom: 2rem;">Get 20% OFF if you complete your order in
+                the next 5 minutes!</p>
+            <button class="intervention-btn" onclick="applyMoodDiscount(20, 'aboutToLeave')">Claim Your 20%
+                Discount</button>
+            <button class="intervention-btn" onclick="saveCartForLater()">Save Cart for Later</button>
+            <button class="intervention-btn" onclick="closeAllInterventions()">I'm Just Browsing</button>
+        </div>
+    </div>
+
+    <!-- 6. Engaged Customer (Minimal/Upsell) -->
+    <div id="interventionEngaged" class="modal intervention-modal" role="dialog" aria-modal="true">
+        <div class="modal-content" style="background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);">
+            <button class="modal-close" onclick="closeAllInterventions()" style="color: white;"
+                aria-label="Close">×</button>
+            <h2 style="color: white; font-size: 2rem; margin-bottom: 1rem;">😊 Great Choices!</h2>
+            <p style="color: white; font-size: 1.1rem; margin-bottom: 2rem;">Customers who bought these also loved:</p>
+            <div style="color: white; margin-bottom: 1rem;">
+                <p>✨ Wireless Mouse - Perfect companion for your keyboard!</p>
+                <p>✨ USB-C Hub - Expand your connectivity!</p>
+            </div>
+            <button class="intervention-btn" onclick="addUpsellToCart()">Add to Cart</button>
+            <button class="intervention-btn" onclick="closeAllInterventions()">Continue Shopping</button>
+        </div>
+    </div>
+
+    <!-- Toast Notification System -->
+    <script src="toast-notification.js"></script>
+
+    <script src="exitguard-tracker.js"></script>
+    <script>
+        const products = [
+            {
+                id: 1,
+                name: 'Wireless Headphones Pro',
+                price: 199,
+                image: 'C:/Users/sree nilay/.gemini/antigravity/brain/463ad957-0ca1-48ab-bdb6-cbd7a16169fa/wireless_headphones_1769172145834.png',
+                description: 'Premium noise-cancelling wireless headphones'
+            },
+            {
+                id: 2,
+                name: 'Smart Fitness Watch',
+                price: 299,
+                image: 'C:/Users/sree nilay/.gemini/antigravity/brain/463ad957-0ca1-48ab-bdb6-cbd7a16169fa/smart_watch_1769172163163.png',
+                description: 'Advanced health tracking and notifications'
+            },
+            {
+                id: 3,
+                name: 'Ergonomic Laptop Stand',
+                price: 79,
+                image: 'C:/Users/sree nilay/.gemini/antigravity/brain/463ad957-0ca1-48ab-bdb6-cbd7a16169fa/laptop_stand_1769172179250.png',
+                description: 'Aluminum stand for perfect viewing angle'
+            },
+            {
+                id: 4,
+                name: 'Mechanical Keyboard RGB',
+                price: 149,
+                image: 'C:/Users/sree nilay/.gemini/antigravity/brain/463ad957-0ca1-48ab-bdb6-cbd7a16169fa/mechanical_keyboard_1769172200798.png',
+                description: 'Tactile switches with customizable lighting'
+            },
+            {
+                id: 5,
+                name: 'Wireless Ergonomic Mouse',
+                price: 69,
+                image: 'C:/Users/sree nilay/.gemini/antigravity/brain/463ad957-0ca1-48ab-bdb6-cbd7a16169fa/wireless_mouse_1769172218209.png',
+                description: 'Precision tracking with ergonomic design'
+            },
+            {
+                id: 6,
+                name: 'USB-C Hub 7-in-1',
+                price: 49,
+                image: 'C:/Users/sree nilay/.gemini/antigravity/brain/463ad957-0ca1-48ab-bdb6-cbd7a16169fa/usb_hub_1769172234700.png',
+                description: 'Expand your connectivity options'
+            }
+        ];
+
+        let cart = [];
+        let interventionShown = false;
+
+        // Hamburger menu toggle
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const navMobile = document.getElementById('navMobile');
+
+        if (hamburgerBtn) {
+            hamburgerBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isOpen = navMobile.classList.toggle('active');
+                hamburgerBtn.classList.toggle('active');
+                hamburgerBtn.setAttribute('aria-expanded', isOpen);
+            });
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.header-content')) {
+                navMobile.classList.remove('active');
+                hamburgerBtn.classList.remove('active');
+                hamburgerBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Close mobile menu and modals on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (navMobile.classList.contains('active')) {
+                    navMobile.classList.remove('active');
+                    hamburgerBtn.classList.remove('active');
+                    hamburgerBtn.setAttribute('aria-expanded', 'false');
+                    hamburgerBtn.focus();
+                }
+                closeCart();
+                closeIntervention();
+            }
+        });
+
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-price">$${product.price}</div>
+                        <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            cart.push(product);
+            updateCartCount();
+
+            // Toast instead of alert
+            Toast.success(`${product.name} added to cart!`);
+
+            // Emit event for mood tracking
+            window.dispatchEvent(new CustomEvent('itemAdded', {
+                detail: { productId, productName: product.name }
+            }));
+
+            // Emit cart changed event
+            window.dispatchEvent(new CustomEvent('cartChanged', {
+                detail: { cartLength: cart.length }
+            }));
+        }
+
+        function updateCartCount() {
+            const count = cart.length;
+            document.getElementById('cartCount').textContent = count;
+            // Update aria-label for screen readers
+            const cartBtn = document.querySelector('.cart-icon');
+            cartBtn.setAttribute('aria-label', `Shopping cart with ${count} item${count !== 1 ? 's' : ''}`);
+        }
+
+        function openCart() {
+            const modal = document.getElementById('cartModal');
+            const cartItemsDiv = document.getElementById('cartItems');
+
+            // Emit cart opened event for mood tracking
+            window.dispatchEvent(new Event('cartOpened'));
+
+            // Also emit modal toggled event
+            window.dispatchEvent(new Event('modalToggled'));
+
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
+                document.getElementById('cartTotal').textContent = '0';
+            } else {
+                cartItemsDiv.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <img src="${item.image}" class="cart-item-image">
+                        <div class="cart-item-info">
+                            <div class="product-name">${item.name}</div>
+                            <div class="product-price">$${item.price}</div>
+                        </div>
+                    </div>
+                `).join('');
+
+                const total = cart.reduce((sum, item) => sum + item.price, 0);
+                document.getElementById('cartTotal').textContent = total;
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').classList.remove('active');
+            // Emit modal toggled event
+            window.dispatchEvent(new Event('modalToggled'));
+        }
+
+        async function goToCheckout() {
+            if (cart.length === 0) {
+                Toast.warning('Your cart is empty!');
+                return;
+            }
+
+            // Calculate order total
+            const orderTotal = cart.reduce((sum, item) => sum + item.price, 0);
+
+            // Show loading toast
+            Toast.info('Processing your order...');
+
+            // Send conversion event to backend with retry logic
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
+                const response = await fetch('http://localhost:5000/api/convert', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'exitguard_demo_key_2026'
+                    },
+                    body: JSON.stringify({
+                        session_id: window.ExitGuard ? window.ExitGuard.sessionId : 'unknown',
+                        order_value: orderTotal,
+                        timestamp: Date.now()
+                    }),
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                const result = await response.json();
+
+                if (result.salvaged) {
+                    Toast.success(`🎉 Purchase Complete! Order: $${orderTotal} | ✅ You were RESCUED by ExitGuard! Revenue Saved: $${result.revenue_saved}`, 6000);
+                } else {
+                    Toast.success(`✅ Purchase Complete! Order Total: $${orderTotal}`, 4000);
+                }
+
+            } catch (error) {
+                console.error('Failed to record conversion:', error);
+                // Still show success to user even if tracking fails
+                Toast.success(`✅ Purchase Complete! Order Total: $${orderTotal}`, 4000);
+            }
+
+            // Clear cart after purchase
+            cart = [];
+            updateCartCount();
+            closeCart();
+
+            // Emit cart changed event
+            window.dispatchEvent(new CustomEvent('cartChanged', {
+                detail: { cartLength: 0 }
+            }));
+        }
+
+        // Mood-based intervention system
+        let shownInterventions = new Set();
+
+        function showIntervention() {
+            // Legacy function - kept for backward compatibility
+            // Now handled by mood-based system
+        }
+
+        function closeAllInterventions() {
+            const interventionModals = document.querySelectorAll('.intervention-modal');
+            interventionModals.forEach(modal => {
+                modal.classList.remove('active');
+            });
+        }
+
+        function closeIntervention() {
+            closeAllInterventions();
+        }
+
+        // Listen for mood changes and show appropriate intervention
+        window.addEventListener('moodChange', function (e) {
+            const mood = e.detail.mood;
+            const confidence = e.detail.confidence;
+
+            console.log(`🎭 Mood detected: ${mood} (confidence: ${confidence})`);
+            console.log(`📊 Mood scores:`, e.detail.scores);
+
+            // Don't show intervention if already shown for this mood
+            if (shownInterventions.has(mood)) {
+                console.log(`⏭️ Already shown intervention for ${mood}`);
+                return;
+            }
+
+            // Don't interrupt engaged customers
+            if (mood === 'engaged') {
+                console.log(`😊 Customer is engaged - no intervention needed`);
+                return;
+            }
+
+            // Map mood to modal ID
+            const modalMap = {
+                'frustrated': 'interventionFrustrated',
+                'hesitating': 'interventionHesitating',
+                'confused': 'interventionConfused',
+                'priceSensitive': 'interventionPriceSensitive',
+                'aboutToLeave': 'interventionAboutToLeave'
+            };
+
+            const modalId = modalMap[mood];
+            // LOWERED from 40 to 10 for easier triggering
+            if (modalId && confidence > 10) {
+                console.log(`✅ SHOWING INTERVENTION for ${mood}!`);
+                showPersonalizedIntervention(mood, modalId);
+            } else {
+                console.log(`⏸️ Confidence ${confidence} too low (need >10)`);
+            }
+        });
+
+        function showPersonalizedIntervention(mood, modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+                shownInterventions.add(mood); // Mark as shown
+
+                // Track intervention
+                if (window.ExitGuard && window.ExitGuard.markIntervention) {
+                    window.ExitGuard.markIntervention(mood);
+                }
+
+                Toast.info(`Personalized offer for ${mood} customer`, 2000);
+            }
+        }
+
+        // Mood-based action functions
+        function applyMoodDiscount(percentage, mood) {
+            Toast.success(`🎉 ${percentage}% discount applied to your cart!`, 4000);
+            closeAllInterventions();
+
+            // In a real app, this would actually modify cart prices
+            console.log(`Applied ${percentage}% discount for ${mood} customer`);
+        }
+
+        function contactSupport() {
+            Toast.info('Opening live chat... (Demo)', 3000);
+            closeAllInterventions();
+        }
+
+        function showReviews() {
+            Toast.info('Loading customer reviews... (Demo)', 3000);
+            closeAllInterventions();
+        }
+
+        function showPopularProducts() {
+            Toast.info('Showing best sellers... (Demo)', 3000);
+            closeAllInterventions();
+            // Scroll to top to see products
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showPaymentOptions() {
+            Toast.info('Payment plans: 3, 6, or 12 months available! (Demo)', 4000);
+            closeAllInterventions();
+        }
+
+        function saveCartForLater() {
+            Toast.success('Cart saved! We will email you a reminder. (Demo)', 4000);
+            closeAllInterventions();
+        }
+
+        function addUpsellToCart() {
+            Toast.success('Upsell items added to cart! (Demo)', 3000);
+            closeAllInterventions();
+        }
+
+        function acceptOffer() {
+            Toast.success('🎉 Great! 10% discount applied to your cart!', 4000);
+            closeIntervention();
+        }
+
+        // Risk score display update
+        window.addEventListener('riskScoreUpdate', function (event) {
+            const riskScore = event.detail.riskScore;
+            const riskBadge = document.getElementById('riskBadge');
+            riskBadge.textContent = riskScore;
+
+            if (riskScore < 30) {
+                riskBadge.style.backgroundColor = '#10B981';
+                riskBadge.style.color = '#FFFFFF';
+            } else if (riskScore < 60) {
+                riskBadge.style.backgroundColor = '#F59E0B';
+                riskBadge.style.color = '#FFFFFF';
+            } else {
+                riskBadge.style.backgroundColor = '#EF4444';
+                riskBadge.style.color = '#FFFFFF';
+            }
+        });
+
+        // Close interventions on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeAllInterventions();
+            }
+        });
+
+        renderProducts();
+
+    </script>
+</body>
+
+</html>

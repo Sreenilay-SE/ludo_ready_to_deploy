@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExitGuard - Dashboard Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F8FAFC;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            color: #FFFFFF;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .logo:hover {
+            color: #10B981;
+        }
+
+        .back-link {
+            color: #D1D5DB;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-weight: 500;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-link:hover {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+        }
+
+        .login-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-container {
+            background: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            max-width: 480px;
+            width: 100%;
+            padding: 3rem;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: #1E293B;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo p {
+            color: #64748B;
+            font-size: 1rem;
+        }
+
+        .demo-credentials {
+            background: #F8FAFC;
+            border: 2px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .demo-credentials h3 {
+            font-size: 0.9rem;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .credential-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: #FFFFFF;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+
+        .credential-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .credential-label {
+            font-weight: 600;
+            color: #1E293B;
+        }
+
+        .credential-value {
+            font-family: 'Courier New', monospace;
+            color: #10B981;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #1E293B;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #1E293B;
+            box-shadow: 0 0 0 3px rgba(30, 41, 59, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 41, 59, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            background: #FEE2E2;
+            border: 2px solid #EF4444;
+            color: #991B1B;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #FFFFFF;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.6s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .demo-note {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #E2E8F0;
+            color: #64748B;
+            font-size: 0.85rem;
+        }
+
+        /* Focus Styles for Accessibility */
+        *:focus-visible {
+            outline: 3px solid #10B981;
+            outline-offset: 2px;
+        }
+
+        /* Skip to Main Content Link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #10B981;
+            color: white;
+            padding: 0.5rem 1rem;
+            z-index: 10000;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Error Messages & Validation */
+        .error-message {
+            color: #EF4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .error-message::before {
+            content: '⚠️';
+        }
+
+        .input-error {
+            border-color: #EF4444 !important;
+            background-color: #FEF2F2;
+        }
+
+        .input-success {
+            border-color: #10B981 !important;
+        }
+
+        /* Loading Button State */
+        .login-btn.loading {
+            position: relative;
+            color: transparent;
+            pointer-events: none;
+        }
+
+        .login-btn.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin: -10px 0 0 -10px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Network Error Alert */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .alert.show {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .alert-error {
+            background-color: #FEF2F2;
+            border: 1px solid #FCA5A5;
+            color: #991B1B;
+        }
+
+        .alert-success {
+            background-color: #ECFDF5;
+            border: 1px solid #6EE7B7;
+            color: #065F46;
+        }
+
+        .alert-icon {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .alert-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: currentColor;
+            opacity: 0.7;
+            padding: 0;
+            min-width: 24px;
+            min-height: 24px;
+        }
+
+        .alert-close:hover {
+            opacity: 1;
+        }
+
+        .retry-btn {
+            background-color: #EF4444;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.75rem;
+            font-size: 0.875rem;
+            min-height: 36px;
+        }
+
+        .retry-btn:hover {
+            background-color: #DC2626;
+        }
+
+        /* Screen Reader Only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .nav-wrapper {
+                padding: 0 1rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .login-wrapper {
+                padding: 1.5rem 1rem;
+            }
+
+            .login-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .demo-credentials {
+                padding: 1rem;
+            }
+
+            .credential-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 1rem 0;
+            }
+
+            .logo {
+                font-size: 1.25rem;
+            }
+
+            .back-link {
+                font-size: 0.9rem;
+                padding: 0.5rem 0.75rem;
+            }
+
+            .login-wrapper {
+                padding: 1rem;
+            }
+
+            .login-container {
+                padding: 1.5rem 1rem;
+            }
+
+            .logo h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header>
+        <div class="nav-wrapper">
+            <a href="index.html" class="logo">🛡️ ExitGuard</a>
+            <a href="index.html" class="back-link" aria-label="Return to home page">← Back to Home</a>
+        </div>
+    </header>
+
+    <main id="main-content" class="login-wrapper">
+        <div class="login-container">
+            <!-- Live Region for Screen Reader Announcements -->
+            <div id="error-announcer" role="alert" aria-live="assertive" class="sr-only"></div>
+            <div id="status-announcer" role="status" aria-live="polite" class="sr-only"></div>
+
+            <!-- Network Error Alert -->
+            <div id="network-alert" class="alert alert-error" role="alert">
+                <span class="alert-icon">⚠️</span>
+                <div class="alert-content">
+                    <div class="alert-title">Connection Error</div>
+                    <div id="alert-message">Unable to connect to the server. Please check your internet connection.
+                    </div>
+                </div>
+                <button class="alert-close" onclick="closeAlert()" aria-label="Close alert">×</button>
+            </div>
+
+            <div class="logo">
+                <h1>🛡️ ExitGuard</h1>
+                <p>Login to Continue</p>
+            </div>
+
+            <div class="demo-credentials">
+                <h3>Demo Credentials</h3>
+                <div class="credential-item">
+                    <span class="credential-label">Admin (Dashboard):</span>
+                    <span class="credential-value">admin / admin123</span>
+                </div>
+                <div class="credential-item">
+                    <span class="credential-label">Support (Dashboard):</span>
+                    <span class="credential-value">support / support123</span>
+                </div>
+                <div class="credential-item">
+                    <span class="credential-label">User (Demo Store):</span>
+                    <span class="credential-value">demo / demo123</span>
+                </div>
+            </div>
+
+
+
+            <form id="loginForm" novalidate>
+                <div class="form-group">
+                    <label for="username">Email or Username</label>
+                    <input type="text" id="username" name="username" required aria-required="true"
+                        aria-describedby="username-error" placeholder="demo or admin" autocomplete="username">
+                    <div id="username-error" class="error-message" role="alert" style="display: none;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required aria-required="true"
+                        aria-describedby="password-error" placeholder="••••••••" autocomplete="current-password">
+                    <div id="password-error" class="error-message" role="alert" style="display: none;"></div>
+                </div>
+
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <span id="btn-text">Login</span>
+                </button>
+            </form>
+
+
+        </div>
+    </main>
+
+    <script>
+        const BACKEND_URL = 'http://localhost:5000';
+
+        // DOM Elements
+        const form = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('loginBtn');
+        const btnText = document.getElementById('btn-text');
+        const networkAlert = document.getElementById('network-alert');
+        const alertMessage = document.getElementById('alert-message');
+        const errorAnnouncer = document.getElementById('error-announcer');
+        const statusAnnouncer = document.getElementById('status-announcer');
+
+        // Validation Functions
+        function showFieldError(field, message) {
+            const errorDiv = document.getElementById(`${field.id}-error`);
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'flex';
+            field.classList.add('input-error');
+            field.classList.remove('input-success');
+            field.setAttribute('aria-invalid', 'true');
+
+            // Announce to screen readers
+            announceError(message);
+        }
+
+        function clearFieldError(field) {
+            const errorDiv = document.getElementById(`${field.id}-error`);
+            errorDiv.textContent = '';
+            errorDiv.style.display = 'none';
+            field.classList.remove('input-error');
+            field.classList.add('input-success');
+            field.setAttribute('aria-invalid', 'false');
+        }
+
+        function validateUsername() {
+            const value = usernameInput.value.trim();
+            if (!value) {
+                showFieldError(usernameInput, 'Username is required');
+                return false;
+            }
+            if (value.length < 3) {
+                showFieldError(usernameInput, 'Username must be at least 3 characters');
+                return false;
+            }
+            clearFieldError(usernameInput);
+            return true;
+        }
+
+        function validatePassword() {
+            const value = passwordInput.value;
+            if (!value) {
+                showFieldError(passwordInput, 'Password is required');
+                return false;
+            }
+            if (value.length < 6) {
+                showFieldError(passwordInput, 'Password must be at least 6 characters');
+                return false;
+            }
+            clearFieldError(passwordInput);
+            return true;
+        }
+
+        // Real-time validation
+        usernameInput.addEventListener('blur', validateUsername);
+        passwordInput.addEventListener('blur', validatePassword);
+
+        // Clear errors on input
+        usernameInput.addEventListener('input', () => {
+            if (usernameInput.value.trim()) {
+                clearFieldError(usernameInput);
+            }
+        });
+        passwordInput.addEventListener('input', () => {
+            if (passwordInput.value) {
+                clearFieldError(passwordInput);
+            }
+        });
+
+        // Accessibility Announcements
+        function announceError(message) {
+            errorAnnouncer.textContent = message;
+            setTimeout(() => errorAnnouncer.textContent = '', 3000);
+        }
+
+        function announceStatus(message) {
+            statusAnnouncer.textContent = message;
+            setTimeout(() => statusAnnouncer.textContent = '', 3000);
+        }
+
+        // Network Alert Functions
+        function showNetworkAlert(message, type = 'error') {
+            alertMessage.textContent = message;
+            networkAlert.className = `alert alert-${type} show`;
+            announceError(message);
+        }
+
+        function closeAlert() {
+            networkAlert.classList.remove('show');
+        }
+
+        // Loading State
+        function setLoadingState(loading) {
+            if (loading) {
+                loginBtn.classList.add('loading');
+                loginBtn.disabled = true;
+                btnText.textContent = 'Logging in...';
+                announceStatus('Logging in, please wait...');
+            } else {
+                loginBtn.classList.remove('loading');
+                loginBtn.disabled = false;
+                btnText.textContent = 'Login';
+            }
+        }
+
+        // Login with Retry Logic
+        async function loginWithRetry(credentials, maxRetries = 3) {
+            for (let attempt = 0; attempt < maxRetries; attempt++) {
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
+                    const response = await fetch(`${BACKEND_URL}/api/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(credentials),
+                        signal: controller.signal
+                    });
+
+                    clearTimeout(timeoutId);
+
+                    if (!response.ok) {
+                        const data = await response.json();
+
+                        // Don't retry on authentication errors (401) - these are credential issues
+                        if (response.status === 401) {
+                            throw new Error(data.message || 'Invalid username or password');
+                        }
+
+                        // Other errors can be retried
+                        throw new Error(data.message || 'Login failed');
+                    }
+
+                    return await response.json();
+
+                } catch (error) {
+                    // Don't retry on authentication errors - fail immediately
+                    if (error.message.includes('Invalid username or password') ||
+                        error.message.includes('Invalid credentials')) {
+                        throw error;
+                    }
+
+                    // Last attempt, show error
+                    if (attempt === maxRetries - 1) {
+                        if (error.name === 'AbortError') {
+                            throw new Error('Request timed out. Please try again.');
+                        }
+                        if (!navigator.onLine) {
+                            throw new Error('No internet connection. Please check your network.');
+                        }
+                        // If it's a network error and we can't reach the server
+                        if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                            throw new Error('Unable to connect to server. Please ensure the backend is running.');
+                        }
+                        throw error;
+                    }
+
+                    // Wait before retry (exponential backoff) - only for network errors
+                    await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempt)));
+                }
+            }
+        }
+
+        // Form Submit Handler
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Close any previous alerts
+            closeAlert();
+
+            // Validate all fields
+            const isUsernameValid = validateUsername();
+            const isPasswordValid = validatePassword();
+
+            if (!isUsernameValid || !isPasswordValid) {
+                announceError('Please fix the errors in the form');
+                return;
+            }
+
+            const credentials = {
+                username: usernameInput.value.trim(),
+                password: passwordInput.value
+            };
+
+            setLoadingState(true);
+
+            try {
+                const data = await loginWithRetry(credentials);
+
+                // Success!
+                announceStatus('Login successful! Redirecting...');
+
+                // Store JWT token and user info
+                localStorage.setItem('exitguard_token', data.token);
+                localStorage.setItem('exitguard_username', data.username);
+                localStorage.setItem('exitguard_role', data.role);
+
+                // Role-based redirection
+                if (data.role === 'admin') {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    window.location.href = 'demo-store.html';
+                }
+
+            } catch (error) {
+                console.error('Login error:', error);
+                setLoadingState(false);
+
+                const errorMsg = error.message || 'Unable to connect to server. Please ensure the backend is running.';
+                showNetworkAlert(errorMsg);
+
+                // Focus back to username for retry
+                usernameInput.focus();
+            }
+        });
+
+        // Quick fill demo credentials
+        document.querySelectorAll('.credential-item').forEach(item => {
+            item.addEventListener('click', function () {
+                const value = this.querySelector('.credential-value').textContent;
+                const [username, password] = value.split(' / ');
+
+                if (username && password) {
+                    usernameInput.value = username.trim();
+                    passwordInput.value = password.trim();
+
+                    // Clear any errors
+                    clearFieldError(usernameInput);
+                    clearFieldError(passwordInput);
+
+                    announceStatus(`Filled with ${username} credentials`);
+                }
+            });
+        });
+
+        // Check network status
+        window.addEventListener('online', () => {
+            closeAlert();
+            announceStatus('Connection restored');
+        });
+
+        window.addEventListener('offline', () => {
+            showNetworkAlert('You are offline. Please check your internet connection.');
+        });
+    </script>
+</body>
+
+</html>
