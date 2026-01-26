@@ -20,7 +20,14 @@ app = Flask(__name__)
 # Configure CORS with support for file:// origins and custom headers
 CORS(app, resources={
     r"/api/*": {
-        "origins": ["http://localhost:5500", "http://127.0.0.1:5500", "http://localhost:*", "http://127.0.0.1:*", "null"],
+        "origins": [
+            "https://rampageludo.vercel.app",  # Production frontend
+            "http://localhost:5500", 
+            "http://127.0.0.1:5500", 
+            "http://localhost:*", 
+            "http://127.0.0.1:*", 
+            "null"
+        ],
         "methods": ["GET", "POST", "OPTIONS"],
         "allow_headers": ["Content-Type", "X-API-Key", "Authorization"],
         "expose_headers": ["Content-Type"],
