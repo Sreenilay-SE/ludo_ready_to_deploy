@@ -1,5 +1,7 @@
 {
     "version": 2,
+    "cleanUrls": true,
+    "trailingSlash": false,
     "builds": [
         {
             "src": "*.html",
@@ -14,26 +16,18 @@
             "use": "@vercel/static"
         }
     ],
-    "routes": [
+    "rewrites": [
         {
-            "src": "/",
-            "dest": "/index.html"
+            "source": "/login",
+            "destination": "/login.html"
         },
         {
-            "src": "/login",
-            "dest": "/login.html"
+            "source": "/dashboard",
+            "destination": "/dashboard.html"
         },
         {
-            "src": "/dashboard",
-            "dest": "/dashboard.html"
-        },
-        {
-            "src": "/demo-store",
-            "dest": "/demo-store.html"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/$1"
+            "source": "/demo-store",
+            "destination": "/demo-store.html"
         }
     ],
     "headers": [
