@@ -2,7 +2,7 @@
 // Captures user micro-interactions and sends to backend for churn risk scoring
 
 (function () {
-    const BACKEND_URL = 'http://localhost:5000';
+    const BACKEND_URL = 'https://exitguard-backend.onrender.com';
     const API_KEY = 'exitguard_demo_key_2026';
     const SEND_INTERVAL = 10000; // Send events every 10 seconds
 
