@@ -89,3 +89,20 @@ No mega frontend framework, no 47 dependencies, no 3-second TTI. Goal was: track
 
 ---
 
+## Local setup (quick & dirty)
+
+Backend
+```bash
+cd backend
+pip install -r requirements.txt
+# optional .env file (or just use defaults)
+python app.py
+
+
+
+
+
+
+
+
+
